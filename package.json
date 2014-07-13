@@ -30,7 +30,9 @@
     "pluralize": "0.0.10",
     "express-resource": "~1.0.0",
     "underscore": "~1.6.0",
-    "wrench": "~1.5.8"
+    "wrench": "~1.5.8",
+    "async": "~0.9.0",
+    "express-ejs-layouts": "~1.1.0"
   },
   "devDependencies": {
     "gulp": "~3.8.6",
