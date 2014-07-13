@@ -1,15 +1,14 @@
 var Resource = require('express-resource');
-var debug = require('debug')('Resources');
 var db = require('../../lib/db');
 var fs = require('fs');
 var path = require('path');
 var _ = require('underscore');
 
+var basePath = '/api/';
 var resources = {};
 
 // set up resources for our models
 db.models.forEach(function(model){
-  debug('Loading resources for model : ',model.prototype.name);
   var name = model.prototype.collection;
   var resource = {};
   var resourceFile = path.join(__dirname,name + '.js');
@@ -77,8 +76,8 @@ db.models.forEach(function(model){
 
 module.exports = function(app){
   Object.keys(resources).forEach(function(name){
-    console.log('Adding resource endpoints for ' + name);
     var services = resources[name];
+    services.base = basePath
     app.resource(name,services);
   });
 }
