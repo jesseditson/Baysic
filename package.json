@@ -26,7 +26,10 @@
     "body-parser": "~1.0.0",
     "debug": "~0.7.4",
     "ejs": "~0.8.5",
-    "node-compass": "0.2.3"
+    "node-compass": "0.2.3",
+    "pluralize": "0.0.10",
+    "express-resource": "~1.0.0",
+    "recursive-readdir": "~1.1.2"
   },
   "devDependencies": {
     "gulp": "~3.8.6",

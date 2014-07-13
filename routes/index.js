@@ -1,9 +1,7 @@
-var express = require('express');
-var router = express.Router();
+var site = require('./site');
+var setupResources = require('./resources');
 
-/* GET home page. */
-router.get('/', function(req, res) {
-  res.render('index', { title: 'Express' });
-});
-
-module.exports = router;
+module.exports = function(app){
+  app.get('/',site.home);
+  setupResources(app);
+}
