@@ -29,7 +29,8 @@
     "node-compass": "0.2.3",
     "pluralize": "0.0.10",
     "express-resource": "~1.0.0",
-    "recursive-readdir": "~1.1.2"
+    "underscore": "~1.6.0",
+    "wrench": "~1.5.8"
   },
   "devDependencies": {
     "gulp": "~3.8.6",
