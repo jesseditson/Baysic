@@ -8,7 +8,7 @@
   "description": "Web presence for Baysic",
   "main": [
     "/build/js/main.js",
-    "/build/css/style.css"
+    "/build/css/application.css"
   ],
   "moduleType": [
     "es6"

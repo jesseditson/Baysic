@@ -19,6 +19,7 @@ coverage
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
 public/build
+public/.sass-cache
 
 # Dependency directory
 # Deployed apps should consider commenting this line out:

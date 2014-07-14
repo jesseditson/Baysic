@@ -9,7 +9,7 @@ var concat = require('gulp-concat');
 gulp.task('bower-install', function(){
   wiredep({
     cwd: 'public',
-    src: 'views/index.ejs',
+    src: 'views/layout.ejs',
     ignorePath: '../public',
     devDependencies: true,
     includeSelf: true
