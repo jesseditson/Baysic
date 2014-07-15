@@ -1,24 +1,21 @@
-// configure routes
-var async = require('async');
+var selectElements = require('qwery');
+var domready = require('domready');
 var routes = require('./routes');
-var currentViewModels = [];
+var models = require('./lib/models');
+var currentRoutes = [];
 
-var loadViewModels = function(viewModels){
-  async.forEach(currentViewModels,function(viewModel,done){
-    // TODO: should this be ko.cleanNode() instead?
-    if(viewModel.tearDown){
-      viewModel.tearDown(done);
-    }
-  },function(err){
-    viewModels.forEach(function(ViewModel){
-      ko.applyBindings(new ViewModel());
+var reloadViewModels = function(){
+  currentRoutes.forEach(function(route){
+    selectElements(route.selector).forEach(function(element){
+      ko.cleanNode(element);
     });
   });
-}
+  routes.forEach(function(route){
+    selectElements(route.selector).forEach(function(element){
+      currentRoutes.push(route);
+      ko.applyBindings(route.viewModel,element);
+    });
+  });
+};
 
-routes.forEach(function(route){
-  if(route.path.test(window.location.pathname)){
-    loadViewModels(route.viewModels);
-  }
-  // TODO: allow matching elements as well as paths?
-});
+domready(reloadViewModels);

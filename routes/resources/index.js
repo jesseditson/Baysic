@@ -77,7 +77,7 @@ db.models.forEach(function(model){
 module.exports = function(app){
   Object.keys(resources).forEach(function(name){
     var services = resources[name];
-    services.base = basePath
+    services.base = basePath;
     app.resource(name,services);
   });
 }

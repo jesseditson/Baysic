@@ -13,22 +13,31 @@ var setProperties = function(schema,model,defaults){
       throw new Error('Tried to initialize non-object property for model ' + (model && model.constructor.prototype.name) + '.' + name);
     }
     if(property.type){
-      if(!property.get){
-        property.get = function(){
+      var getter = function(){
+        if(property.get){
+          return property.get.call(this);
+        } else {
           return defaults[name];
         }
       }
-      if(!property.set){
-        property.set = function(val){
-          if(!undef(val) && val.constructor !== property.type){
-            throw new Error('Tried to set property ' + name + ' to an object of invalid type ' + val.constructor.name + '. (Must be of type '+property.type.name+')');
-          }
+      var setter = function(val){
+        if(!undef(val) && val.constructor !== property.type){
+          throw new Error('Tried to set property ' + name + ' to an object of invalid type ' + val.constructor.name + '. (Must be of type '+property.type.name+')');
+        }
+        // on the client, map this to a ko observable if not explicitly set to non-observable.
+        if(typeof ko !== 'undefined' && property.observable !== false){
+          val = ko.observable(val);
+        }
+        if(property.set){
+          property.set.call(this,val);
+        } else {
           defaults[name] = val;
         }
       }
+
       Object.defineProperty(model,name,{
-        get : property.get,
-        set : property.set,
+        get : getter,
+        set : setter,
         enumerable : true,
         configurable : false
       });
@@ -52,7 +61,8 @@ module.exports = function(name,schema,collection){
   };
   SubModel.prototype = Object.create(Model.prototype);
   SubModel.prototype.constructor = SubModel;
-  SubModel.prototype.collection = collection || pluralize(name).toLowerCase();
   SubModel.prototype.constructor.prototype.name = name;
+  SubModel.prototype.schema = schema;
+  SubModel.prototype.collection = collection || pluralize(name).toLowerCase();
   return SubModel;
 };
