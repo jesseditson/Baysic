@@ -15,7 +15,7 @@ var generateModel = function(Model){
       url : '/api/' + collection,
       type : 'json',
       method : 'get',
-      success : wrapSuccess.bind(this,success),
+      success : success,
       error : error
     });
   };
@@ -24,7 +24,7 @@ var generateModel = function(Model){
       url : '/api/' + collection + '/' + id,
       type : 'json',
       method : 'get',
-      success : wrapSuccess.bind(this,success),
+      success : success,
       error : error
     });
   };
@@ -35,7 +35,7 @@ var generateModel = function(Model){
       type : 'json',
       method : method,
       data : ko.toJSON(this),
-      success : wrapSuccess.bind(this,success),
+      success : success,
       error : error
     });
   };
@@ -44,7 +44,7 @@ var generateModel = function(Model){
       url : '/api/' + collection + '/' + this._id,
       type : 'json',
       method : 'delete',
-      success : wrapSuccess.bind(this,success),
+      success : success,
       error : error
     });
   };
