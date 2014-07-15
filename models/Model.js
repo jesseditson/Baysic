@@ -26,7 +26,7 @@ var setProperties = function(schema,model,defaults){
         }
         // on the client, map this to a ko observable if not explicitly set to non-observable.
         if(typeof ko !== 'undefined' && property.observable !== false){
-          val = ko.observable(val);
+          val = Array.isArray(val) ? ko.observableArray(val) : ko.observable(val);
         }
         if(property.set){
           property.set.call(this,val);

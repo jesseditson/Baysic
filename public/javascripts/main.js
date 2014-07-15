@@ -1,7 +1,6 @@
 var selectElements = require('qwery');
 var domready = require('domready');
 var routes = require('./routes');
-var models = require('./lib/models');
 var currentRoutes = [];
 
 var reloadViewModels = function(){

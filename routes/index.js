@@ -9,6 +9,7 @@ module.exports = function(app){
 
   // admin
   app.get('/admin',admin.home);
+  app.get('/admin/posts',admin.posts);
 
   setupResources(app);
 }

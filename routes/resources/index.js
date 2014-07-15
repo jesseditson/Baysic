@@ -23,9 +23,8 @@ db.models.forEach(function(model){
           if(err){
             res.send(500,err);
           } else {
-            var o = {};
-            o[name] = arr;
-            res.json(o);
+            arr.push({title : "testing"});
+            res.json(arr);
           }
         });
       },

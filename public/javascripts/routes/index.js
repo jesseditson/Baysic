@@ -12,3 +12,9 @@ routes.push({
   selector : '#artists',
   viewModel : require('../viewModels/artists')
 });
+
+// admin
+routes.push({
+  selector : '#posts-admin',
+  viewModel : require('../viewModels/admin/posts')
+})
