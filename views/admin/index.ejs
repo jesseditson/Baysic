@@ -1,0 +1,9 @@
+<%- include nav.ejs %>
+
+<div id="admin-index">
+  <ul data-bind="foreach: items">
+    <li>
+      <a data-bind="text: title, attr: { href: '/admin/'+$root.modelName+'/' + _id }"></a>
+    </li>
+  </ul>
+</div>

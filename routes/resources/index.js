@@ -1,5 +1,6 @@
 var Resource = require('express-resource');
 var db = require('../../lib/db');
+var models = require('../../lib/models');
 var fs = require('fs');
 var path = require('path');
 var _ = require('underscore');
@@ -8,7 +9,8 @@ var basePath = '/api/';
 var resources = {};
 
 // set up resources for our models
-db.models.forEach(function(model){
+Object.keys(models).forEach(function(key){
+  var model = models[key];
   var name = model.prototype.collection;
   var resource = {};
   var resourceFile = path.join(__dirname,name + '.js');
@@ -16,7 +18,7 @@ db.models.forEach(function(model){
     resource = require(resourceFile);
   }
   // Add some sensible defaults if necessary
-  var collection = db.db[name];
+  var collection = db[name];
   resources[name] = _.extend({
       index : function(req,res){
         collection.findArray({},function(err,arr){
@@ -57,7 +59,7 @@ db.models.forEach(function(model){
       },
       destroy : function(req,res){
         try {
-          var _id = db.db.id(req.params[0]);
+          var _id = db.id(req.params[0]);
         } catch(e){
           return res.send(406,'{"error" : "invalid id"}');
         }

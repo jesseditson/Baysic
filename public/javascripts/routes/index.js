@@ -15,6 +15,11 @@ routes.push({
 
 // admin
 routes.push({
-  selector : '#posts-admin',
-  viewModel : require('../viewModels/admin/posts')
-})
+  selector : '#admin-menu',
+  viewModel : require('../viewModels/admin/admin')
+});
+
+routes.push({
+  selector : '#admin-index',
+  viewModel : require('../viewModels/admin/index')
+});

@@ -1,6 +1,7 @@
 var site = require('./site');
 var admin = require('./admin');
 var setupResources = require('./resources');
+var models = require('../lib/models');
 
 module.exports = function(app){
   // main site
@@ -9,7 +10,10 @@ module.exports = function(app){
 
   // admin
   app.get('/admin',admin.home);
-  app.get('/admin/posts',admin.posts);
+  Object.keys(models).forEach(function(name){
+    var model = models[name];
+    app.get('/admin/' + model.prototype.collection,admin.index);
+  });
 
   setupResources(app);
 }

@@ -1,4 +1,5 @@
 var reqwest = require('reqwest');
+var models = require('../../../lib/models');
 
 var wrapSuccess = function(success,response){
   var observableResponse = response;
@@ -51,7 +52,8 @@ var generateModel = function(Model){
   return Model;
 };
 
-module.exports = {
-  Post : generateModel(require('../../../models/Post')),
-  User : generateModel(require('../../../models/User'))
-}
+module.exports = Object.keys(models).reduce(function(map,name){
+  var model = models[name];
+  map[name] = generateModel(model);
+  return map;
+},{});

@@ -1,7 +1,7 @@
-<header class="admin-menu">
+<header id="admin-menu">
   <ul>
-    <li>
-      <a href="/admin/posts">posts</a>
+    <li data-bind="foreach: models">
+      <a data-bind="text: $data, attr: { href: '/admin/' + $data }"></a>
     </li>
   </ul>
 </header>
