@@ -23,3 +23,8 @@ routes.push({
   selector : '#admin-index',
   viewModel : require('../viewModels/admin/index')
 });
+
+routes.push({
+  selector : '#admin-create',
+  viewModel : require('../viewModels/admin/create')
+});

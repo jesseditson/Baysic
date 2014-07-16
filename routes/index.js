@@ -11,8 +11,10 @@ module.exports = function(app){
   // admin
   app.get('/admin',admin.home);
   Object.keys(models).forEach(function(name){
-    var model = models[name];
-    app.get('/admin/' + model.prototype.collection,admin.index);
+    var Model = models[name];
+    var collection = Model.prototype.collection;
+    app.get('/admin/' + collection,admin.index);
+    app.get('/admin/' + collection + '/create',admin.create);
   });
 
   setupResources(app);

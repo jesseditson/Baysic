@@ -3,7 +3,9 @@
 <div id="admin-index">
   <ul data-bind="foreach: items">
     <li>
-      <a data-bind="text: title, attr: { href: '/admin/'+$root.modelName+'/' + _id }"></a>
+      <a data-bind="text: title, attr: { href: '/admin/'+$root.collection+'/' + _id }"></a>
     </li>
   </ul>
+
+  <a data-bind="attr: { href: '/admin/'+collection+'/new' }">New</a>
 </div>
