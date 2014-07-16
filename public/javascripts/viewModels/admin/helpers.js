@@ -16,3 +16,32 @@ helpers.currentModel = function(){
   },{});
   return model;
 };
+
+helpers.parseSchema = function(schema){
+  var fields = [];
+  Object.keys(schema).forEach(function(key){
+    var keyInfo = schema[key];
+    var info = {
+      name : key,
+      editable : keyInfo.editable !== false
+    };
+    switch(keyInfo.type){
+      case Boolean:
+        info.tag = 'input';
+        info.type = 'checkbox';
+        break;
+      case Number:
+        info.tag = 'input';
+        info.type = 'number';
+        break;
+      case String:
+      default:
+        // TODO: recurse if deep?
+        info.tag = info.text ? 'textarea' : 'input';
+        info.type = info.secure ? 'password' : 'text';
+        break;
+    }
+    fields.push(info);
+  });
+  return fields;
+};

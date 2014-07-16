@@ -12,7 +12,7 @@ var reloadViewModels = function(){
   routes.forEach(function(route){
     selectElements(route.selector).forEach(function(element){
       currentRoutes.push(route);
-      ko.applyBindings(route.viewModel,element);
+      ko.applyBindings(new (route.viewModel)(),element);
     });
   });
 };

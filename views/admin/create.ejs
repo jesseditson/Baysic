@@ -1,3 +1,15 @@
+<%- include nav.ejs %>
 <div id="admin-create">
-  
+    <ul data-bind="foreach: fields">
+      <li>
+        <label data-bind="text: name, attr: {for:name}"></label>
+        <!-- ko if: tag == 'input' -->
+        <input data-bind="attr: { type: type, name: name, disabled: !editable }, value: $root.model[name]"/>
+        <!-- /ko -->
+        <!-- ko if: tag == 'textarea' -->
+        <textarea data-bind="attr: { type: type, name: name, disabled: !editable }, value: $root.model[name]"></textarea>
+        <!-- /ko -->
+      </li>
+    </ul>
+    <a data-bind="click: save">Save</a>
 </div>

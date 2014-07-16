@@ -9,6 +9,16 @@ var wrapSuccess = function(success,response){
   success.call(this,observableResponse);
 }
 
+var getJS = function(model){
+  var object = Object.keys(model).reduce(function(o,key){
+    if(model[key]){
+      o[key] = model[key]();
+    }
+    return o;
+  },{});
+  return object;
+}
+
 var generateModel = function(Model){
   var collection = Model.prototype.collection;
   Model.index = function(success,error){
@@ -35,7 +45,7 @@ var generateModel = function(Model){
       url : '/api/' + collection,
       type : 'json',
       method : method,
-      data : ko.toJSON(this),
+      data : getJS(this),
       success : success,
       error : error
     });

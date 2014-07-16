@@ -30,7 +30,7 @@ Object.keys(models).forEach(function(key){
         });
       },
       create : function(req,res){
-        var newResource = new resource(req.body);
+        var newResource = new model(req.body);
         collection.insert(newResource,function(err){
           if (err) {
             res.send(500,err);
