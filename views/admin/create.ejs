@@ -4,10 +4,10 @@
       <li>
         <label data-bind="text: name, attr: {for:name}"></label>
         <!-- ko if: tag == 'input' -->
-        <input data-bind="attr: { type: type, name: name, disabled: !editable }, value: $root.model[name]"/>
+        <input data-bind="attr: { type: type, name: name, disabled: !editable }, value: $root.model()[name]"/>
         <!-- /ko -->
         <!-- ko if: tag == 'textarea' -->
-        <textarea data-bind="attr: { type: type, name: name, disabled: !editable }, value: $root.model[name]"></textarea>
+        <textarea data-bind="attr: { type: type, name: name, disabled: !editable }, value: $root.model()[name]"></textarea>
         <!-- /ko -->
       </li>
     </ul>

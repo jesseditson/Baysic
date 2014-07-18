@@ -21,6 +21,10 @@ var setProperties = function(schema,model,defaults){
         }
       }
       var setter = function(val){
+        // cast to strings if type is string.
+        if(val && property.type === String && typeof val.toString == 'function'){
+          val = val.toString();
+        }
         if(!undef(val) && val.constructor !== property.type){
           throw new Error('Tried to set property ' + name + ' to an object of invalid type ' + val.constructor.name + '. (Must be of type '+property.type.name+')');
         }
