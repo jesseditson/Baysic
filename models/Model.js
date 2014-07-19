@@ -9,7 +9,6 @@ var undef = function(val){
 var setProperties = function(schema,model,defaults){
   Object.keys(schema || {}).forEach(function(name){
     var property = schema[name];
-    console.log(property);
     if(!(typeof property === 'object')){
       throw new Error('Tried to initialize non-object property for model ' + (model && model.constructor.prototype.name) + '.' + name);
     }

@@ -52,8 +52,9 @@ var generateModel = function(Model){
     });
   };
   Model.prototype.destroy = function(success,error){
+    var data = getJS(this);
     reqwest({
-      url : '/api/' + collection + '/' + this._id,
+      url : '/api/' + collection + '/' + data._id,
       type : 'json',
       method : 'delete',
       success : success,

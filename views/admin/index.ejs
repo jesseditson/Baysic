@@ -4,6 +4,7 @@
   <ul data-bind="foreach: items">
     <li>
       <a data-bind="text: title, attr: { href: '/admin/'+$root.collection+'/' + _id }"></a>
+      <a data-bind="click: $root.remove">delete</a>
     </li>
   </ul>
 
