@@ -9,16 +9,6 @@ var wrapSuccess = function(success,response){
   success.call(this,observableResponse);
 }
 
-var getJS = function(model){
-  var object = Object.keys(model).reduce(function(o,key){
-    if(model[key]){
-      o[key] = model[key]();
-    }
-    return o;
-  },{});
-  return object;
-}
-
 var generateModel = function(Model){
   var collection = Model.prototype.collection;
   Model.index = function(success,error){
@@ -40,7 +30,7 @@ var generateModel = function(Model){
     });
   };
   Model.prototype.save = function(success,error){
-    var data = getJS(this);
+    var data = this.toObject();
     method = !!data._id ? 'put' : 'post';
     reqwest({
       url : '/api/' + collection + (data._id ? '/' + data._id : ''),
@@ -52,7 +42,7 @@ var generateModel = function(Model){
     });
   };
   Model.prototype.destroy = function(success,error){
-    var data = getJS(this);
+    var data = this.toObject();
     reqwest({
       url : '/api/' + collection + '/' + data._id,
       type : 'json',

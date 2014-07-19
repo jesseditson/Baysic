@@ -11,5 +11,8 @@ var Post = module.exports = new Model('Post',{
   body : {
     text: true,
     type : String
+  },
+  featured : {
+    type : Boolean
   }
 });

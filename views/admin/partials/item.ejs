@@ -1,8 +1,11 @@
 <ul data-bind="foreach: fields">
   <li>
     <label data-bind="text: name, attr: {for:name}"></label>
-    <!-- ko if: tag == 'input' -->
+    <!-- ko if: tag == 'input' && type != 'checkbox' -->
     <input data-bind="attr: { type: type, name: name, disabled: !editable }, value: $root.model()[name]"/>
+    <!-- /ko -->
+    <!-- ko if: tag == 'input' && type == 'checkbox' -->
+    <input data-bind="attr: { type: type, name: name, disabled: !editable }, checked: $root.model()[name]"/>
     <!-- /ko -->
     <!-- ko if: tag == 'textarea' -->
     <textarea data-bind="attr: { type: type, name: name, disabled: !editable }, value: $root.model()[name]"></textarea>

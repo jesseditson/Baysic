@@ -18,8 +18,8 @@ var parseId = function(id){
 
 // set up resources for our models
 Object.keys(models).forEach(function(key){
-  var model = models[key];
-  var name = model.prototype.collection;
+  var Model = models[key];
+  var name = Model.prototype.collection;
   var resource = {};
   var resourceFile = path.join(__dirname,name + '.js');
   if(fs.existsSync(resourceFile)){
@@ -38,7 +38,7 @@ Object.keys(models).forEach(function(key){
         });
       },
       create : function(req,res){
-        var newResource = new model(req.body);
+        var newResource = new Model(req.body);
         collection.insert(newResource,function(err){
           if (err) {
             res.send(500,err);
@@ -63,8 +63,9 @@ Object.keys(models).forEach(function(key){
         } else {
           // don't allow update on id
           delete req.body._id;
-          collection.findAndModifyById(id,null,{$set:req.body},{new:true},function(err,item){
-            if(!item){
+          var info = new Model(req.body);
+          collection.findAndModifyById(id,null,{$set:info.toObject()},{new:true},function(err,item){
+            if(!err && !item){
               res.send(404,'Item not found');
             } else if(err){
               res.send(500,err);
