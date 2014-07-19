@@ -1,4 +1,5 @@
-var helpers = require('./helpers');
+var helpers = require('./lib/helpers');
+var installRichText = require('./lib/installRichText');
 
 function UpdateItemAdminViewModel() {
   var Model = helpers.currentModel();
@@ -18,6 +19,7 @@ function UpdateItemAdminViewModel() {
       console.error(arguments);
     });
   };
+  installRichText('.rich-text');
 };
 
 module.exports = UpdateItemAdminViewModel;

@@ -1,4 +1,4 @@
-var selectElements = require('qwery');
+var qwery = require('qwery');
 var domready = require('domready');
 var routes = require('./routes');
 var currentRoutes = [];
@@ -10,9 +10,9 @@ var reloadViewModels = function(){
     });
   });
   routes.forEach(function(route){
-    selectElements(route.selector).forEach(function(element){
+    qwery(route.selector).forEach(function(element){
       currentRoutes.push(route);
-      ko.applyBindings(new (route.viewModel)(),element);
+      ko.applyBindings(new (route.viewModel)(element),element);
     });
   });
 };

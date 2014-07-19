@@ -8,7 +8,8 @@
     <input data-bind="attr: { type: type, name: name, disabled: !editable }, checked: $root.model()[name]"/>
     <!-- /ko -->
     <!-- ko if: tag == 'textarea' -->
-    <textarea data-bind="attr: { type: type, name: name, disabled: !editable }, value: $root.model()[name]"></textarea>
+    <input type="hidden" data-bind="attr: { name: name, disabled: !editable}, value: $root.model()[name]"/>
+    <%- include quill-editor.ejs %>
     <!-- /ko -->
   </li>
 </ul>
