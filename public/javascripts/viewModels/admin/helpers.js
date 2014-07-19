@@ -42,8 +42,8 @@ helpers.parseSchema = function(schema){
       case String:
       default:
         // TODO: recurse if deep?
-        info.tag = info.text ? 'textarea' : 'input';
-        info.type = info.secure ? 'password' : 'text';
+        info.tag = keyInfo.text ? 'textarea' : 'input';
+        info.type = keyInfo.secure ? 'password' : 'text';
         break;
     }
     fields.push(info);

@@ -9,6 +9,7 @@ var Post = module.exports = new Model('Post',{
     type : String
   },
   body : {
+    text: true,
     type : String
   }
 });
