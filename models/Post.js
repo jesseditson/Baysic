@@ -2,7 +2,7 @@ var Model = require('./Model.js');
 
 var Post = module.exports = new Model('Post',{
   _id : {
-    type : String,
+    type : 'Any',
     editable : false
   },
   title : {

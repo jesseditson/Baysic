@@ -9,3 +9,7 @@ exports.index = function(req,res,next){
 exports.create = function(req,res,next){
   res.render('admin/create');
 };
+
+exports.update = function(req,res,next){
+  res.render('admin/update');
+};

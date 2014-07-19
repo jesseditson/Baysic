@@ -8,6 +8,11 @@ var currentCollection = helpers.currentCollection = function(){
   return match ? match[1] : null;
 };
 
+helpers.currentID = function(){
+  var match = url.parse(window.location.href).pathname.match(/\/admin\/[^\/]+\/([^\/]+)/);
+  return match ? match[1] : null;
+};
+
 helpers.currentModel = function(){
   var collection = currentCollection();
   var model = Object.keys(models).reduce(function(previous,name){

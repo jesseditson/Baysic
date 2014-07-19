@@ -8,6 +8,14 @@ var _ = require('underscore');
 var basePath = '/api/';
 var resources = {};
 
+var parseId = function(id){
+  try {
+    return db.id(id);
+  } catch(e){
+    return null;
+  }
+}
+
 // set up resources for our models
 Object.keys(models).forEach(function(key){
   var model = models[key];
@@ -49,27 +57,36 @@ Object.keys(models).forEach(function(key){
         });
       },
       update : function(req,res){
-        collection.findAndModifyById(req.params[0],req.body,function(err,item){
-          if(err){
-            res.send(500,err);
-          } else {
-            res.json(item);
-          }
-        });
+        var id = parseId(req.params[key.toLowerCase()]);
+        if(!id){
+          res.send(406,'{"error" : "invalid id"}');
+        } else {
+          // don't allow update on id
+          delete req.body._id;
+          collection.findAndModifyById(id,null,{$set:req.body},{new:true},function(err,item){
+            if(!item){
+              res.send(404,'Item not found');
+            } else if(err){
+              res.send(500,err);
+            } else {
+              res.json(item);
+            }
+          });
+        }
       },
       destroy : function(req,res){
-        try {
-          var _id = db.id(req.params[0]);
-        } catch(e){
-          return res.send(406,'{"error" : "invalid id"}');
+        var id = parseId(req.params[key.toLowerCase()]);
+        if(!id){
+          res.send(406,'{"error" : "invalid id"}');
+        } else {
+          collection.remove({_id : id},function(err){
+            if(err){
+              res.send(500,err);
+            } else {
+              res.send(204);
+            }
+          });
         }
-        collection.remove({_id : _id},function(err){
-          if(err){
-            res.send(500,err);
-          } else {
-            res.send(204);
-          }
-        });
       }
     },resource);
 });

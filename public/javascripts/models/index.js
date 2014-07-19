@@ -40,12 +40,13 @@ var generateModel = function(Model){
     });
   };
   Model.prototype.save = function(success,error){
-    method = !!this._id ? 'put' : 'post';
+    var data = getJS(this);
+    method = !!data._id ? 'put' : 'post';
     reqwest({
-      url : '/api/' + collection,
+      url : '/api/' + collection + (data._id ? '/' + data._id : ''),
       type : 'json',
       method : method,
-      data : getJS(this),
+      data : data,
       success : success,
       error : error
     });

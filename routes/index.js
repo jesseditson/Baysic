@@ -15,6 +15,7 @@ module.exports = function(app){
     var collection = Model.prototype.collection;
     app.get('/admin/' + collection,admin.index);
     app.get('/admin/' + collection + '/create',admin.create);
+    app.get('/admin/' + collection + '/:id',admin.update);
   });
 
   setupResources(app);

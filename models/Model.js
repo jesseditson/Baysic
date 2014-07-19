@@ -9,6 +9,7 @@ var undef = function(val){
 var setProperties = function(schema,model,defaults){
   Object.keys(schema || {}).forEach(function(name){
     var property = schema[name];
+    console.log(property);
     if(!(typeof property === 'object')){
       throw new Error('Tried to initialize non-object property for model ' + (model && model.constructor.prototype.name) + '.' + name);
     }
@@ -21,11 +22,7 @@ var setProperties = function(schema,model,defaults){
         }
       }
       var setter = function(val){
-        // cast to strings if type is string.
-        if(val && property.type === String && typeof val.toString == 'function'){
-          val = val.toString();
-        }
-        if(!undef(val) && val.constructor !== property.type){
+        if(!undef(val) && property.type !== 'Any' && val.constructor !== property.type){
           throw new Error('Tried to set property ' + name + ' to an object of invalid type ' + val.constructor.name + '. (Must be of type '+property.type.name+')');
         }
         // on the client, map this to a ko observable if not explicitly set to non-observable.
