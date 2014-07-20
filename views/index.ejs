@@ -1,5 +1,7 @@
 <div id="home">
   <h1>Home</h1>
 
-  <a href="/artists">artists</a>
+  <ul data-bind="foreach: posts">
+    <h4 data-bind="text: title"></h4>
+  </ul>
 </div>

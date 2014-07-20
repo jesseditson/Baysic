@@ -9,11 +9,45 @@ var setupRoutes = require('./routes/index');
 
 var app = express();
 
+var FruitLoops = require('fruit-loops');
+var _ = require('underscore');
+var url = require('url');
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+// app.set('view engine', 'ejs');
 app.use(require('express-ejs-layouts'));
-app.engine('html', require('ejs').renderFile);
+app.use(function(req,res,next){
+  var originalRender = res.render;
+  res.render = function(){
+    var args = Array.prototype.slice.call(arguments);
+    args[1] = _.extend(args[1] || {},{req : req});
+    originalRender.apply(this,args);
+  };
+  next();
+});
+app.engine('ejs',function(filename,options,callback){
+  var uri = url.parse(options.req.originalUrl);
+  FruitLoops.page({
+    index: filename,
+    host : uri.host,
+    path : uri.path,
+    protocol : uri.protocol,
+    resolver: function(href,page){
+      console.log('href: ',href);
+      return href;
+    },
+    callback: function(err,html){
+      if(err){
+        callback(err);
+      } else {
+        callback(null,html);
+      }
+    }
+  });
+});
+app.set('view engine','ejs');
+// app.engine('html', require('ejs').renderFile);
 
 app.use(favicon());
 app.use(logger('dev'));
