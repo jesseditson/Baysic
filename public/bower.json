@@ -22,7 +22,5 @@
     "test",
     "tests"
   ],
-  "dependencies": {
-    "knockout": "~3.1.0"
-  }
+  "dependencies": {}
 }

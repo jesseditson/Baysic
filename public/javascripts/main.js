@@ -1,5 +1,6 @@
 var selectElements = require('qwery');
 var domready = require('domready');
+var ko = require('knockout');
 var routes = require('./routes');
 var currentRoutes = [];
 

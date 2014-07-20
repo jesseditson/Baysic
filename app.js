@@ -9,11 +9,24 @@ var setupRoutes = require('./routes/index');
 
 var app = express();
 
+var ejs = require('ejs');
+var benv = require('benv');
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
 app.use(require('express-ejs-layouts'));
-app.engine('html', require('ejs').renderFile);
+app.engine('ejs', function(filename,options,callback){
+  ejs.renderFile(filename,options,function(err,html){
+    benv.setup(function(){
+      document.documentElement.innerHTML = html;
+      require('./public/javascripts/main');
+      setTimeout(function(){
+        callback(null,document.documentElement.innerHTML);
+      },3000);
+    });
+  });
+});
+app.set('view engine', 'ejs');
 
 app.use(favicon());
 app.use(logger('dev'));
