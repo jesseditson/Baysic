@@ -4,6 +4,7 @@ var favicon = require('static-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var url = require('url');
 
 var setupRoutes = require('./routes/index');
 
@@ -15,14 +16,23 @@ var benv = require('benv');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.use(require('express-ejs-layouts'));
+app.use(function(req,res,next){
+  res.locals.url = url.parse('http' + (req.connection.secure ? 's' : '') + '://' + req.headers.host + req.url)
+  next();
+});
 app.engine('ejs', function(filename,options,callback){
   ejs.renderFile(filename,options,function(err,html){
     benv.setup(function(){
+      window.ready = function(){
+        var output = document.documentElement.innerHTML;
+        benv.teardown();
+        console.log('window.ready called');
+        console.log(output);
+        callback(null,output);
+      }
+      window.location = options.url;
       document.documentElement.innerHTML = html;
       require('./public/javascripts/main');
-      setTimeout(function(){
-        callback(null,document.documentElement.innerHTML);
-      },3000);
     });
   });
 });
