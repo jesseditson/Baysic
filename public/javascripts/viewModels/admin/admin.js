@@ -1,4 +1,5 @@
 var models = require('../../models');
+var ko = require('knockout');
 
 function AdminViewModel() {
   var modelNames = Object.keys(models).map(function(name){

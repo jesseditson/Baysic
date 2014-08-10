@@ -11,7 +11,14 @@ var setupRoutes = require('./routes/index');
 var app = express();
 
 var ejs = require('ejs');
-var benv = require('benv');
+var fs = require('fs');
+var Contextify = require('contextify');
+var jsdom = require('jsdom');
+jsdom.defaultDocumentFeatures = {
+    FetchExternalResources: false,
+    ProcessExternalResources: false
+};
+var js = fs.readFileSync('./public/build/js/main.js','utf-8');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -22,18 +29,23 @@ app.use(function(req,res,next){
 });
 app.engine('ejs', function(filename,options,callback){
   ejs.renderFile(filename,options,function(err,html){
-    benv.setup(function(){
-      window.ready = function(){
-        var output = document.documentElement.innerHTML;
-        benv.teardown();
-        console.log('window.ready called');
-        console.log(output);
-        callback(null,output);
-      }
-      window.location = options.url;
-      document.documentElement.innerHTML = html;
-      require('./public/javascripts/main');
+    if(err) return callback(err);
+    var document = jsdom.jsdom({
+      html : html,
+      url : options.url
     });
+    var window = document.parentWindow;
+    window.ready = function(){
+      var output = window.document.documentElement.innerHTML;
+      callback(null,output);
+    };
+    var sandbox = Contextify({
+      window : window,
+      document : document,
+      console : console,
+      alert : console.warn.bind(console,'ALERT:')
+    });
+    sandbox.run(js);
   });
 });
 app.set('view engine', 'ejs');

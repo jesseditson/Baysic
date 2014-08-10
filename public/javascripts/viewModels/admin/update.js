@@ -1,4 +1,5 @@
 var helpers = require('./helpers');
+var ko = require('knockout');
 
 function UpdateItemAdminViewModel() {
   var Model = helpers.currentModel();

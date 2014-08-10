@@ -28,4 +28,6 @@ var reloadViewModels = function(){
   });
 };
 
+console.log('loaded!');
+
 domready(reloadViewModels);
