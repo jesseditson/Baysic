@@ -1,14 +1,14 @@
 var selectElements = require('qwery');
 var domready = require('domready');
-var ko = require('knockout');
 var routes = require('./routes');
 var async = require('async');
+var eggs = require('eggs');
 var currentRoutes, currentViewModels, currentElements;
 
 var reloadViewModels = function(){
   (currentRoutes || []).forEach(function(info){
     selectElements(info.route.selector).forEach(function(element){
-      ko.cleanNode(element);
+      eggs.unbind(info.viewModel,element);
     });
   });
   currentRoutes = [];
@@ -17,8 +17,11 @@ var reloadViewModels = function(){
       currentRoutes.push({route : route, element : element});
     });
   });
-  async.forEach(currentRoutes,function(info,ready){
-    ko.applyBindings(new (info.route.viewModel)(ready),info.element);
+  async.forEach(Object.keys(currentRoutes),function(idx,ready){
+    var vm = new (info.route.viewModel)(ready);
+    currentRoutes[idx].viewModel = vm;
+    var info = currentRoutes[idx];
+    eggs.bind(vm,info.element,{ attr : 'data-bind' });
   },function(){
     console.log('completed loading all routes.');
     // all routes loaded and prepared.

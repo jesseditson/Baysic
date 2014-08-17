@@ -1,10 +1,9 @@
-var ko = require('knockout');
 var helpers = require('./helpers');
 
 function AdminIndexViewModel(ready) {
   var Model = helpers.currentModel();
   var self = this;
-  self.items = ko.observableArray();
+  self.items = [];
   self.collection = helpers.currentCollection();
   self.remove = function(info){
     if(confirm('Are you sure you want to delete this item? This cannot be undone.')){
