@@ -18,9 +18,9 @@ var reloadViewModels = function(){
     });
   });
   async.forEach(Object.keys(currentRoutes),function(idx,ready){
+    var info = currentRoutes[idx];
     var vm = new (info.route.viewModel)(ready);
     currentRoutes[idx].viewModel = vm;
-    var info = currentRoutes[idx];
     eggs.bind(vm,info.element,{ attr : 'data-bind' });
   },function(){
     console.log('completed loading all routes.');
