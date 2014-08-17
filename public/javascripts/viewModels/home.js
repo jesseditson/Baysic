@@ -6,13 +6,11 @@ function HomeViewModel(ready) {
   var self = this;
   self.posts = ko.observableArray();
   Post.index(function(list){
-    console.log('list : ',list);
     self.posts(list);
-    ready();
+    console.log(self.posts());
   },function(){
     console.error(arguments);
-    ready();
-  })
+  },ready);
 }
 
 module.exports = HomeViewModel;

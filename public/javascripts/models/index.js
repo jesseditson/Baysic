@@ -2,35 +2,34 @@ var reqwest = require('arequest');
 var models = require('../../../lib/models');
 var url = require('url');
 
-var wrapSuccess = function(success,response){
-  var observableResponse = response;
-  if(observableResponse){
-    observableResponse = Array.isArray(observableResponse) ? ko.observableArray(observableResponse) : ko.observable(observableResponse);
-  }
-  success.call(this,observableResponse);
+var completeFn = function(fn,complete){
+  return function(){
+    fn.apply(this,arguments);
+    complete();
+  };
 }
 
 var generateModel = function(Model){
   var collection = Model.prototype.collection;
-  Model.index = function(success,error){
+  Model.index = function(success,error,complete){
     reqwest({
       url : url.resolve(window.location.href,'/api/' + collection),
       type : 'json',
       method : 'get',
-      success : success,
-      error : error
+      success : completeFn(success,complete),
+      error : completeFn(error,complete)
     });
   };
-  Model.show = function(id,success,error){
+  Model.show = function(id,success,error,complete){
     reqwest({
       url : url.resolve(window.location.href,'/api/' + collection + '/' + id),
       type : 'json',
       method : 'get',
-      success : success,
-      error : error
+      success : completeFn(success,complete),
+      error : completeFn(error,complete)
     });
   };
-  Model.prototype.save = function(success,error){
+  Model.prototype.save = function(success,error,complete){
     var data = this.toObject();
     method = !!data._id ? 'put' : 'post';
     reqwest({
@@ -38,18 +37,18 @@ var generateModel = function(Model){
       type : 'json',
       method : method,
       data : data,
-      success : success,
-      error : error
+      success : completeFn(success,complete),
+      error : completeFn(error,complete)
     });
   };
-  Model.prototype.destroy = function(success,error){
+  Model.prototype.destroy = function(success,error,complete){
     var data = this.toObject();
     reqwest({
       url : url.resolve(window.location.href,'/api/' + collection + '/' + data._id),
       type : 'json',
       method : 'delete',
-      success : success,
-      error : error
+      success : completeFn(success,complete),
+      error : completeFn(error,complete)
     });
   };
   return Model;

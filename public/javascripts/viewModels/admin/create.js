@@ -1,6 +1,6 @@
 var helpers = require('./helpers');
 
-function CreateItemAdminViewModel() {
+function CreateItemAdminViewModel(ready) {
   var Model = helpers.currentModel();
   var self = this;
   var newModel = new Model();
@@ -14,6 +14,7 @@ function CreateItemAdminViewModel() {
       console.error(arguments);
     });
   };
+  ready();
 };
 
 module.exports = CreateItemAdminViewModel;

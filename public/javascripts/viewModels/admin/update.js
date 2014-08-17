@@ -1,6 +1,6 @@
 var helpers = require('./helpers');
 
-function UpdateItemAdminViewModel() {
+function UpdateItemAdminViewModel(ready) {
   var Model = helpers.currentModel();
   var self = this;
   var newModel = new Model();
@@ -10,7 +10,7 @@ function UpdateItemAdminViewModel() {
     self.model(new Model(info));
   },function(err){
     console.error(err);
-  });
+  },ready);
   self.save = function(){
     self.model().save(function(saved){
       self.model(new Model(saved));

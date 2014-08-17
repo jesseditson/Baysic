@@ -11,30 +11,31 @@ var setupRoutes = require('./routes/index');
 var app = express();
 
 var ejs = require('ejs');
-var benv = require('benv');
+var cp = require('child_process');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.use(require('express-ejs-layouts'));
 app.use(function(req,res,next){
-  res.locals.url = url.parse('http' + (req.connection.secure ? 's' : '') + '://' + req.headers.host + req.url)
+  res.locals.url = url.parse('http' + (req.connection.secure ? 's' : '') + '://' + req.headers.host + req.url);
+  res.locals.headers = req.headers;
   next();
 });
 app.engine('ejs', function(filename,options,callback){
-  ejs.renderFile(filename,options,function(err,html){
-    benv.setup(function(){
-      window.ready = function(){
-        var output = document.documentElement.innerHTML;
-        benv.teardown();
-        console.log('window.ready called');
-        console.log(output);
-        callback(null,output);
-      }
-      window.location = options.url;
-      document.documentElement.innerHTML = html;
-      require('./public/javascripts/main');
-    });
-  });
+  if(/\/layout\.ejs$/.test(filename)){
+    var oCallback = callback;
+    callback = function(err,html){
+      var client = cp.fork(path.join(__dirname,'lib/client.js'));
+      client.send({
+        url : options.url,
+        html : html
+      });
+      client.on('message',function(output){
+        oCallback(null,output)
+      });
+    };
+  }
+  ejs.renderFile(filename,options,callback);
 });
 app.set('view engine', 'ejs');
 

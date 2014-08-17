@@ -1,6 +1,7 @@
+var ko = require('knockout');
 var helpers = require('./helpers');
 
-function AdminIndexViewModel() {
+function AdminIndexViewModel(ready) {
   var Model = helpers.currentModel();
   var self = this;
   self.items = ko.observableArray();
@@ -16,15 +17,15 @@ function AdminIndexViewModel() {
     }
   };
 
-  var reload = function(){
+  var reload = function(cb){
     Model.index(function(items){
       self.items(items);
     },function(){
       console.error(arguments);
-    });
+    },cb);
   }
 
-  reload();
+  reload(ready);
 }
 
 module.exports = AdminIndexViewModel;
